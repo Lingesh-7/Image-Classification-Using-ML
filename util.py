@@ -42,13 +42,13 @@ def load_saved_artifacts():
     global __class_name_to_number
     global __class_number_to_name
 
-    with open(r'C:\Users\linge\Desktop\python 100 days\Machine Learning\image_classification\model\class_dictionary.json','r') as f:
+    with open(r'D:\ML_and_DL\Machine_learning_projects\image_classification\model\class_dictionary.json','r') as f:
         __class_name_to_number = json.load(f)
         __class_number_to_name = {v:k for k,v in __class_name_to_number.items()}
 
     global __model
     if __model is None:
-        with open(r'C:\Users\linge\Desktop\python 100 days\Machine Learning\image_classification\model\saved_model.pkl','rb') as f:
+        with open(r'D:\ML_and_DL\Machine_learning_projects\image_classification\model\saved_model.pkl','rb') as f:
             __model = joblib.load(f)
     print("loading saved artifacts...done")
 
@@ -66,8 +66,8 @@ def get_cv2_image_from_base64_string(b64str):
 
 
 def get_cropped_image_if_2_eyes(image_path, image_base64_data):
-    face_cascade = cv2.CascadeClassifier(r'C:\Users\linge\Desktop\python 100 days\Machine Learning\image_classification\haarcascades\haarcascade_frontalface_default.xml')
-    eye_cascade = cv2.CascadeClassifier(r'C:\Users\linge\Desktop\python 100 days\Machine Learning\image_classification\haarcascades\haarcascade_eye.xml')
+    face_cascade = cv2.CascadeClassifier(r'D:\ML_and_DL\Machine_learning_projects\image_classification\haarcascades\haarcascade_frontalface_default.xml')
+    eye_cascade = cv2.CascadeClassifier(r'D:\ML_and_DL\Machine_learning_projects\image_classification\haarcascades\haarcascade_eye.xml')
 
     if image_path:
         img = cv2.imread(image_path)
@@ -91,7 +91,7 @@ def get_cropped_image_if_2_eyes(image_path, image_base64_data):
     
 
 def get_b64_test_image_for_virat():
-    with open(r'C:\Users\linge\Desktop\python 100 days\Machine Learning\image_classification\testvirat.txt','r') as f:
+    with open(r'D:\ML_and_DL\Machine_learning_projects\image_classification\testvirat.txt','r') as f:
         return f.read()
 
 
