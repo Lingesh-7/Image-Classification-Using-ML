@@ -22,11 +22,52 @@
             margin-top: 10px;
             padding: 10px;
         }
+        body {
+            background-color: #f0fff0;
+            padding-top: 30px;
+        }
+        .example-img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border: 3px solid green;
+            margin: 10px;
+            border-radius: 10px;
+        }
+        .upload-section {
+            margin-top: 40px;
+        }
     </style>
 </head>
 <body>
 <div class="container text-center">
-    <h2 class="mb-4 text-success">🏏 Sports Celebrity Classifier</h2>
+     <div class="container text-center">
+        <h1 class="mb-4">🏆 Sports Celebrity Classifier</h1>
+
+        <h4>Model Can Recognize:</h4>
+        <div class="d-flex justify-content-center flex-wrap">
+            <div>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/9b/Virat_Kohli_in_PMO_New_Delhi.jpg" alt="Virat Kohli" class="example-img">
+                <p>Virat Kohli</p>
+            </div>
+            <div>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a1/Lionel_Messi_20180626_%283x4_cropped%29.jpg" alt="Lionel Messi" class="example-img">
+                <p>Lionel Messi</p>
+            </div>
+            <div>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWEG6kpyGH6fXWomaIhStCcAQVEo7Vgp7vBg&s" alt="Maria Sharapova" class="example-img">
+                <p>Maria Sharapova</p>
+            </div>
+            <div>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1lUKr1kYUttMKHE9mvJKuRF67H2t5U3b4tw&s" alt="Roger Federer" class="example-img">
+                <p>Roger Federer</p>
+            </div>
+            <div>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRafDyXktyfo1kGYEYovXCSJPJlAni6qcP_eA&s" alt="Serena Williams" class="example-img">
+                <p>Serena Williams</p>
+            </div>
+            
+        </div>
 
     <form id="upload-form">
         <input type="file" class="form-control" id="image-upload" accept="image/*" required>
@@ -100,3 +141,32 @@
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+<!-- 
+<style>
+        body {
+            background-color: #f0fff0;
+            padding-top: 30px;
+        }
+        .example-img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border: 3px solid green;
+            margin: 10px;
+            border-radius: 10px;
+        }
+        .upload-section {
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    -->
