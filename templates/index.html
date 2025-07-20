@@ -3,97 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <title>🏏 Sports Celebrity Classifier</title>
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { background-color: #f1fdf4; padding-top: 30px; }
-        .container { max-width: 700px; margin-top: 20px; }
-        .preview-img { max-width: 100%; max-height: 300px; border: 2px dashed #ccc; margin-top: 10px; padding: 10px; }
-        .example-img { width: 150px; height: 150px; object-fit: cover; border: 3px solid green; margin: 10px; border-radius: 10px; }
+        body {
+            background-color: #f1fdf4;
+            padding-top: 30px;
+        }
+        .container {
+            max-width: 700px;
+            margin-top: 20px;
+        }
+        .preview-img {
+            max-width: 100%;
+            max-height: 300px;
+            border: 2px dashed #ccc;
+            margin-top: 10px;
+            padding: 10px;
+        }
+        .example-img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border: 3px solid green;
+            margin: 10px;
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body>
 <div class="container text-center">
     <h1 class="mb-4">🏆 Sports Celebrity Classifier</h1>
 
-    <form id="upload-form" class="upload-section mt-4">
-        <input type="file" class="form-control" id="image-upload" accept="image/*" required>
+    <h4>Model Can Recognize:</h4>
+    <div class="d-flex justify-content-center flex-wrap">
+        <div>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/9/9b/Virat_Kohli_in_PMO_New_Delhi.jpg" alt="Virat Kohli" class="example-img">
+            <p>Virat Kohli</p>
+        </div>
+        <div>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a1/Lionel_Messi_20180626_%283x4_cropped%29.jpg" alt="Lionel Messi" class="example-img">
+            <p>Lionel Messi</p>
+        </div>
+        <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWEG6kpyGH6fXWomaIhStCcAQVEo7Vgp7vBg&s" alt="Maria Sharapova" class="example-img">
+            <p>Maria Sharapova</p>
+        </div>
+        <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1lUKr1kYUttMKHE9mvJKuRF67H2t5U3b4tw&s" alt="Roger Federer" class="example-img">
+            <p>Roger Federer</p>
+        </div>
+        <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRafDyXktyfo1kGYEYovXCSJPJlAni6qcP_eA&s" alt="Serena Williams" class="example-img">
+            <p>Serena Williams</p>
+        </div>
+    </div>
+
+    <!-- Upload and Preview Form -->
+    <form action="/" method="post" enctype="multipart/form-data" class="upload-section mt-4">
+        <input type="file" class="form-control" id="image-upload" name="image_file" accept="image/*" required>
         <img id="preview" class="preview-img" src="#" alt="Image Preview" style="display: none;">
+        <input type="hidden" name="image_data" id="image-data">
         <button type="submit" class="btn btn-success mt-3">Classify</button>
     </form>
 
-    <div id="result" class="mt-4 text-start" style="display:none;">
-        <h5>Prediction Result:</h5>
-        <p><strong>Class:</strong> <span id="predicted-class"></span></p>
+    <!-- Result Section (Server-rendered by Flask) -->
+    {% if result %}
+<div class="card mt-5 text-start shadow-sm border-success">
+    <div class="card-header bg-success text-white">
+        <h5 class="mb-0">🎯 Prediction Result</h5>
+    </div>
+    <div class="card-body">
+        <p><strong>Class:</strong> {{ result[0].class.replace('_', ' ').title() }}</p>
         <p><strong>Confidence Scores:</strong></p>
-        <ul id="confidence-list"></ul>
+        <ul class="list-group list-group-flush">
+            {% for prob in result[0].class_probability %}
+                <li class="list-group-item">Class {{ loop.index0 }}: {{ prob }}%</li>
+            {% endfor %}
+        </ul>
     </div>
 </div>
+{% endif %}
 
+</div>
+{% if error_message %}
+<div class="alert alert-danger mt-4" role="alert">
+    {{ error_message }}
+</div>
+{% endif %}
+
+
+<!-- Script Section -->
 <script>
     const imageInput = document.getElementById("image-upload");
     const preview = document.getElementById("preview");
-    const form = document.getElementById("upload-form");
+    const hiddenInput = document.getElementById("image-data");
 
     imageInput.addEventListener("change", function () {
         const file = this.files[0];
+
         if (file) {
+            // Check size (< 16MB)
+            if (file.size > 16 * 1024 * 1024) {
+                alert("⚠️ File size exceeds 16MB. Please upload a smaller image.");
+                this.value = "";  // Clear file input
+                preview.style.display = "none";
+                hiddenInput.value = "";
+                return;
+            }
+
             const reader = new FileReader();
             reader.onload = function (e) {
                 preview.src = e.target.result;
                 preview.style.display = "block";
+                hiddenInput.value = e.target.result;
             };
             reader.readAsDataURL(file);
         }
     });
-
-    form.addEventListener("submit", async function (e) {
-        e.preventDefault();
-
-        const file = imageInput.files[0];
-        if (!file) return alert("Please upload an image.");
-
-        const reader = new FileReader();
-        reader.onloadend = async function () {
-            const base64Image = reader.result;
-
-            const formData = new FormData();
-            formData.append("image_data", base64Image);
-
-            try {
-                const response = await fetch("/classify_image", {
-                    method: "POST",
-                    body: formData
-                });
-
-                const data = await response.json();
-
-                if (data.error) {
-                    alert("Server error: " + data.error);
-                    return;
-                }
-
-                if (data && data.length > 0) {
-                    document.getElementById("result").style.display = "block";
-                    document.getElementById("predicted-class").textContent = data[0].class;
-
-                    const confList = document.getElementById("confidence-list");
-                    confList.innerHTML = "";
-                    const probs = data[0].class_probability;
-                    const classes = Object.keys(data[0].class_dictionary);
-
-                    classes.forEach((cls, idx) => {
-                        const li = document.createElement("li");
-                        li.textContent = `${cls}: ${probs[idx]}%`;
-                        confList.appendChild(li);
-                    });
-                }
-            } catch (err) {
-                alert("Error occurred: " + err.message);
-            }
-        };
-        reader.readAsDataURL(file);
-    });
 </script>
+
 </body>
 </html>
