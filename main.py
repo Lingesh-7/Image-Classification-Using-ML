@@ -1,8 +1,7 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, render_template, jsonify
 import util
 
 app = Flask(__name__, template_folder='templates')
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Limit uploads to 16 MB
 
 @app.route('/')
 def home():
@@ -11,15 +10,13 @@ def home():
 @app.route('/classify_image', methods=['POST'])
 def classify_image():
     image_data = request.form['image_data']
-    response = jsonify(util.classify_image(image_data))
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    return response
+    result = util.classify_image(image_data)
+    return jsonify(result)
 
 if __name__ == "__main__":
     print("Starting Python Flask Server For Sports Celebrity Image Classification")
     util.load_saved_artifacts()
-    app.run(port=5000)
-
+    app.run(debug=True)
 
 
 
