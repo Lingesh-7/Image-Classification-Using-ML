@@ -27,6 +27,17 @@ def get_cv2_image_from_bytes(image_bytes):
     pil_image = Image.open(BytesIO(image_bytes)).convert("RGB")
     return cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2BGR)
 
+# ✅ This function is used when image is uploaded in base64 from browser
+def get_cv2_image_from_base64_string(b64str):
+    try:
+        encoded_data = b64str.split(',')[1]
+        nparr = np.frombuffer(base64.b64decode(encoded_data.encode('utf-8')), np.uint8)
+        img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+        return img
+    except Exception as e:
+        print("Base64 decoding error:", e)
+        return None
+
 def wavelet_transform(img, mode='haar', level=1):
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     img_gray = np.float32(img_gray)
@@ -44,7 +55,10 @@ def classify_image(image_bytes):
     scalled_raw_img = cv2.resize(img, (32, 32))
     img_har = wavelet_transform(img, 'db1', 5)
     scalled_img_har = cv2.resize(img_har, (32, 32))
-    combined_img = np.vstack((scalled_raw_img.reshape(32*32*3, 1), scalled_img_har.reshape(32*32, 1))).reshape(1, -1)
+    combined_img = np.vstack((
+        scalled_raw_img.reshape(32 * 32 * 3, 1),
+        scalled_img_har.reshape(32 * 32, 1)
+    )).reshape(1, -1)
 
     predicted_class_num = __model.predict(combined_img)[0]
     predicted_class_name = __class_number_to_name[predicted_class_num]
