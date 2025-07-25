@@ -28,9 +28,4 @@ python main.py.py
 Visit `http://localhost:5000` to upload images for classification.  
 
 ## Results  
-The model classifies **celebrity images** with **76% accuracy**, demonstrating effective feature extraction using CNNs.  
-
-## Future Improvements  
-- Fine-tune CNN layers for **higher accuracy**.  
-- Optimize dataset preprocessing & augmentation.  
-- Expand model deployment to **cloud-based applications**.  
+The model classifies **celebrity images** with **76% accuracy**
