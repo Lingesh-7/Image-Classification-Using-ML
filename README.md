@@ -1,6 +1,6 @@
 # 🏆 Celebrity Image Classification
 ## Overview  
-This project utilizes **SVM** with **Transfer Learning** to classify images of celebrities,the model efficiently identifies and categorizes different celebrities based on image inputs, achieving **76% accuracy** on the test set.  
+This project utilizes **SVM Algorithm** to classify images of celebrities,the model efficiently identifies and categorizes different celebrities based on image inputs, achieving **76% accuracy** on the test set.  
 
 
 ## Installation  
