@@ -1,19 +1,7 @@
-# 🏆 Celebrity Image Classification Using CNN  
-
+# 🏆 Celebrity Image Classification
 ## Overview  
-This project utilizes **Convolutional Neural Networks (CNNs)** with **Transfer Learning** to classify images of celebrities. By leveraging deep learning, the model efficiently identifies and categorizes different celebrities based on image inputs, achieving **76% accuracy** on the test set.  
+This project utilizes **SVM** with **Transfer Learning** to classify images of celebrities,the model efficiently identifies and categorizes different celebrities based on image inputs, achieving **76% accuracy** on the test set.  
 
-## Features  
-- **CNN-based image classification** with a 6-layer architecture.  
-- **Transfer Learning implementation** for enhanced accuracy.  
-- **Data preprocessing & augmentation** to improve robustness.  
-- **Flask-based deployment** for real-time image uploads & predictions.  
-
-## Technologies Used  
-- **CNN (Convolutional Neural Networks)** – Feature extraction & classification.  
-- **Python & OpenCV** – Image processing.  
-- **TensorFlow/Keras** – Deep learning framework.  
-- **Flask** – Web-based deployment.  
 
 ## Installation  
 ```bash
@@ -35,7 +23,7 @@ python predict.py --image path/to/image.jpg
 
 ### 3. Web-Based Prediction (Flask App)  
 ```bash
-python app.py
+python main.py.py
 ```
 Visit `http://localhost:5000` to upload images for classification.  
 
